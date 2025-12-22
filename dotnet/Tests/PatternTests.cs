@@ -1,7 +1,4 @@
-using Xunit;
-using PasswordGenerator.Shared;
-using PasswordGenerator.MVP;
-using PasswordGenerator.MVC;
+using Generator = PasswordGenerator.Shared.PasswordGenerator;
 
 namespace PasswordGenerator.Tests;
 
@@ -13,13 +10,13 @@ public class PasswordPresenterTests
 {
     private readonly MockPasswordView _mockView = new();
     private readonly MockRandomSource _mockRandom = new(new byte[] { 0x10, 0x20, 0x30 });
-    private readonly PasswordGenerator _generator;
+    private readonly Generator _generator;
     private readonly InMemoryPasswordStorage _storage = new();
     private readonly PasswordPresenter _presenter;
 
     public PasswordPresenterTests()
     {
-        _generator = new PasswordGenerator(_mockRandom);
+        _generator = new Generator(_mockRandom);
         _presenter = new PasswordPresenter(_mockView, _generator, _storage);
     }
 
@@ -71,17 +68,21 @@ public class PasswordPresenterTests
 
 /// <summary>
 /// Unit tests for PasswordController in MVC pattern.
-/// Demonstrates isolation: testing Controller with mocked View and Model.
+/// Demonstrates isolation: testing Controller with real Model and View.
 /// </summary>
 public class PasswordControllerTests
 {
-    private readonly MockPasswordModel _mockModel = new();
-    private readonly MockConsoleView _mockView = new();
+    private readonly PasswordModel _model;
+    private readonly ConsoleView _view = new();
     private readonly PasswordController _controller;
 
     public PasswordControllerTests()
     {
-        _controller = new PasswordController(_mockModel, _mockView);
+        var mockRandom = new MockRandomSource(new byte[] { 0x10, 0x20, 0x30 });
+        var generator = new Generator(mockRandom);
+        var storage = new InMemoryPasswordStorage();
+        _model = new PasswordModel(generator, storage);
+        _controller = new PasswordController(_model, _view);
     }
 
     [Fact]
@@ -96,19 +97,8 @@ public class PasswordControllerTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
-            new PasswordController(null!, _mockView)
+            new PasswordController(null!, _view)
         );
-    }
-
-    private sealed class MockPasswordModel
-    {
-        public bool GeneratePasswordCalled { get; set; }
-        public bool SavePasswordCalled { get; set; }
-    }
-
-    private sealed class MockConsoleView
-    {
-        public bool ShowMainMenuCalled { get; set; }
     }
 }
 
@@ -124,7 +114,7 @@ public class IntegrationTests
         // Arrange
         var storage = new InMemoryPasswordStorage();
         var mockRandom = new MockRandomSource(new byte[] { 0x10, 0x20, 0x30, 0x40 });
-        var generator = new PasswordGenerator(mockRandom);
+        var generator = new Generator(mockRandom);
 
         // Act - Generate
         var config = new PasswordConfig(12, useSpecialChars: true);
@@ -186,8 +176,8 @@ public class IntegrationTests
         // Arrange
         var randomSource1 = new MockRandomSource(new byte[] { 0x01 });
         var randomSource2 = new MockRandomSource(new byte[] { 0xFF });
-        var generator1 = new PasswordGenerator(randomSource1);
-        var generator2 = new PasswordGenerator(randomSource2);
+        var generator1 = new Generator(randomSource1);
+        var generator2 = new Generator(randomSource2);
 
         var config = new PasswordConfig(20, useSpecialChars: false);
 
