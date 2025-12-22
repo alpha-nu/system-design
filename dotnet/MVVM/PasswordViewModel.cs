@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.ComponentModel;
+using PasswordGenerator.Shared;
+using Generator = PasswordGenerator.Shared.PasswordGenerator;
+
 namespace PasswordGenerator.MVVM;
 
 /// <summary>
@@ -6,7 +11,7 @@ namespace PasswordGenerator.MVVM;
 /// </summary>
 public sealed class PasswordViewModel : INotifyPropertyChanged
 {
-    private readonly PasswordGenerator _generator;
+    private readonly Generator _generator;
     private readonly IPasswordStorage _storage;
 
     private string _currentPassword = "";
@@ -18,7 +23,7 @@ public sealed class PasswordViewModel : INotifyPropertyChanged
     public event EventHandler<PropertyChangedEventArgs>? PropertyChanged;
 
     /// <summary>Initializes a new instance of the PasswordViewModel class.</summary>
-    public PasswordViewModel(PasswordGenerator generator, IPasswordStorage storage)
+    public PasswordViewModel(Generator generator, IPasswordStorage storage)
     {
         _generator = generator ?? throw new ArgumentNullException(nameof(generator));
         _storage = storage ?? throw new ArgumentNullException(nameof(storage));
@@ -136,10 +141,10 @@ public sealed class PasswordViewModel : INotifyPropertyChanged
         {
             var config = new PasswordConfig(PasswordLength, UseSpecialChars, SelectedRandomSource);
             var randomSource = RandomSourceFactory.Create(SelectedRandomSource);
-            var generator = new PasswordGenerator(randomSource);
+            var generator = new Generator(randomSource);
 
             CurrentPassword = generator.Generate(config);
-            CurrentPasswordStrength = PasswordGenerator.CalculateStrength(CurrentPassword);
+            CurrentPasswordStrength = Generator.CalculateStrength(CurrentPassword);
         }
         catch (Exception ex)
         {
@@ -182,7 +187,7 @@ public sealed class PasswordViewModel : INotifyPropertyChanged
     #endregion
 
     /// <summary>Raises the PropertyChanged event.</summary>
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

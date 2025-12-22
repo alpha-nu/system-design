@@ -1,10 +1,9 @@
-using PasswordGenerator.Shared;
-using PasswordGenerator.MVC;
+using Generator = PasswordGenerator.Shared.PasswordGenerator;
 
 // Setup: Create dependencies
 var storage = new JsonPasswordStorage();
 var randomSource = RandomSourceFactory.Create(RandomSourceType.CryptoRandom);
-var generator = new PasswordGenerator(randomSource);
+var generator = new Generator(randomSource);
 
 // Create Model and View
 var model = new PasswordModel(generator, storage);

@@ -1,3 +1,5 @@
+using Generator = PasswordGenerator.Shared.PasswordGenerator;
+
 namespace PasswordGenerator.MVC;
 
 /// <summary>
@@ -6,7 +8,7 @@ namespace PasswordGenerator.MVC;
 /// </summary>
 public sealed class PasswordModel
 {
-    private readonly PasswordGenerator _generator;
+    private readonly Generator _generator;
     private readonly IPasswordStorage _storage;
 
     /// <summary>
@@ -14,7 +16,7 @@ public sealed class PasswordModel
     /// </summary>
     /// <param name="generator">Password generator instance.</param>
     /// <param name="storage">Password storage instance.</param>
-    public PasswordModel(PasswordGenerator generator, IPasswordStorage storage)
+    public PasswordModel(Generator generator, IPasswordStorage storage)
     {
         _generator = generator ?? throw new ArgumentNullException(nameof(generator));
         _storage = storage ?? throw new ArgumentNullException(nameof(storage));
@@ -69,7 +71,7 @@ public sealed class PasswordModel
     /// <returns>The password strength.</returns>
     public PasswordStrength GetPasswordStrength(string password)
     {
-        return PasswordGenerator.CalculateStrength(password);
+        return Generator.CalculateStrength(password);
     }
 
     /// <summary>

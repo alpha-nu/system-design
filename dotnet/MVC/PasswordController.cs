@@ -1,3 +1,5 @@
+using Generator = PasswordGenerator.Shared.PasswordGenerator;
+
 namespace PasswordGenerator.MVC;
 
 /// <summary>
@@ -85,7 +87,7 @@ public sealed class PasswordController
             // Generate password via model
             var config = new PasswordConfig(length, useSpecialChars, _currentRandomSource);
             var randomSource = RandomSourceFactory.Create(_currentRandomSource);
-            var generator = new PasswordGenerator(randomSource);
+            var generator = new Generator(randomSource);
 
             _currentPassword = generator.Generate(config);
             var strength = _model.GetPasswordStrength(_currentPassword);

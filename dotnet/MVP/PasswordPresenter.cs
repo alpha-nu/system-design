@@ -1,3 +1,5 @@
+using Generator = PasswordGenerator.Shared.PasswordGenerator;
+
 namespace PasswordGenerator.MVP;
 
 /// <summary>
@@ -8,7 +10,7 @@ namespace PasswordGenerator.MVP;
 public sealed class PasswordPresenter
 {
     private readonly IPasswordView _view;
-    private readonly PasswordGenerator _generator;
+    private readonly Generator _generator;
     private readonly IPasswordStorage _storage;
     private string? _currentPassword;
     private RandomSourceType _currentRandomSource = RandomSourceType.CryptoRandom;
@@ -19,7 +21,7 @@ public sealed class PasswordPresenter
     /// <param name="view">The password view interface.</param>
     /// <param name="generator">Password generator.</param>
     /// <param name="storage">Password storage.</param>
-    public PasswordPresenter(IPasswordView view, PasswordGenerator generator, IPasswordStorage storage)
+    public PasswordPresenter(IPasswordView view, Generator generator, IPasswordStorage storage)
     {
         _view = view ?? throw new ArgumentNullException(nameof(view));
         _generator = generator ?? throw new ArgumentNullException(nameof(generator));
@@ -68,10 +70,10 @@ public sealed class PasswordPresenter
 
             var config = new PasswordConfig(_view.PasswordLength, _view.UseSpecialChars, _currentRandomSource);
             var randomSource = RandomSourceFactory.Create(_currentRandomSource);
-            var generator = new PasswordGenerator(randomSource);
+            var generator = new Generator(randomSource);
 
             _currentPassword = generator.Generate(config);
-            var strength = PasswordGenerator.CalculateStrength(_currentPassword);
+            var strength = Generator.CalculateStrength(_currentPassword);
 
             _view.DisplayGeneratedPassword(_currentPassword, strength);
         }

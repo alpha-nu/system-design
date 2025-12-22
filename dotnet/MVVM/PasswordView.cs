@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using PasswordGenerator.Shared;
+
 namespace PasswordGenerator.MVVM;
 
 /// <summary>

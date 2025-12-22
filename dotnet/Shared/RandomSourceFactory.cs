@@ -13,7 +13,7 @@ public static class RandomSourceFactory
     /// <exception cref="InvalidOperationException">Thrown if source is not available on current platform.</exception>
     public static IRandomSource Create(RandomSourceType type)
     {
-        var source = type switch
+        IRandomSource source = type switch
         {
             RandomSourceType.SystemRandom => new SystemRandomSource(),
             RandomSourceType.CryptoRandom => new CryptoRandomSource(),

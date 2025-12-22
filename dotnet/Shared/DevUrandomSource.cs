@@ -26,7 +26,13 @@ public sealed class DevUrandomSource : IRandomSource
         try
         {
             using var fs = File.OpenRead(DevUrandomPath);
-            fs.ReadExactly(bytes, 0, count);
+            int totalRead = 0;
+            while (totalRead < count)
+            {
+                int bytesRead = fs.Read(bytes, totalRead, count - totalRead);
+                if (bytesRead == 0) throw new EndOfStreamException();
+                totalRead += bytesRead;
+            }
         }
         catch (Exception ex)
         {
