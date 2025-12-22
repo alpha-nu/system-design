@@ -1,3 +1,7 @@
+using Xunit;
+using PasswordGenerator.Shared;
+using PasswordGenerator.MVP;
+using PasswordGenerator.MVC;
 using Generator = PasswordGenerator.Shared.PasswordGenerator;
 
 namespace PasswordGenerator.Tests;

@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using PasswordGenerator.Shared;
 using Generator = PasswordGenerator.Shared.PasswordGenerator;
 
 namespace PasswordGenerator.MVVM;

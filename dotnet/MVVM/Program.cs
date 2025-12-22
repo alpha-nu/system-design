@@ -1,3 +1,5 @@
+using PasswordGenerator.Shared;
+using PasswordGenerator.MVVM;
 using Generator = PasswordGenerator.Shared.PasswordGenerator;
 
 // Setup: Create dependencies

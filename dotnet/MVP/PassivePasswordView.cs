@@ -1,3 +1,5 @@
+using PasswordGenerator.Shared;
+
 namespace PasswordGenerator.MVP;
 
 /// <summary>
