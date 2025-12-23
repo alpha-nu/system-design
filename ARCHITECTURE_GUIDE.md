@@ -240,6 +240,12 @@ mvc-mvp-mvvm/
 
 ## 🧪 Testing Highlights
 
+## ▶️ How to Run Tests & Coverage
+- **.NET tests**: from repo root run `dotnet test examples/mvc-mvp-mvvm/dotnet/Tests/Tests.csproj`.
+- **Coverage (built-in coverlet)**: `dotnet test examples/mvc-mvp-mvvm/dotnet/Tests/Tests.csproj /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover` (or `cobertura`).
+- **Outputs**: `coverage/coverage.opencover.xml` (or `coverage/coverage.cobertura.xml`) inside [dotnet/Tests](dotnet/Tests).
+- **HTML (optional)**: install `dotnet-reportgenerator-globaltool` and run `reportgenerator -reports:coverage/coverage.opencover.xml -targetdir:coverage/html` if you want an HTML view.
+
 ### Coverage Metrics
 - **Domain Models:** 100% of critical paths
 - **Password Generation:** 8 test cases covering all scenarios

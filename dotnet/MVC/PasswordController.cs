@@ -10,7 +10,7 @@ namespace PasswordGenerator.MVC;
 public sealed class PasswordController
 {
     private readonly PasswordModel _model;
-    private readonly ConsoleView _view;
+    private readonly IConsoleView _view;
 
     // Current state
     private string? _currentPassword;
@@ -21,7 +21,7 @@ public sealed class PasswordController
     /// </summary>
     /// <param name="model">The password model.</param>
     /// <param name="view">The console view.</param>
-    public PasswordController(PasswordModel model, ConsoleView view)
+    public PasswordController(PasswordModel model, IConsoleView view)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -34,36 +34,44 @@ public sealed class PasswordController
     {
         while (true)
         {
-            try
-            {
-                var choice = _view.ShowMainMenu();
+            ProcessOnce();
+        }
+    }
 
-                switch (choice)
-                {
-                    case '1':
-                        HandleGeneratePassword();
-                        break;
-                    case '2':
-                        HandleSavePassword();
-                        break;
-                    case '3':
-                        HandleViewPasswords();
-                        break;
-                    case '4':
-                        HandleDeletePassword();
-                        break;
-                    case '5':
-                        _view.ShowGoodbye();
-                        return;
-                    default:
-                        _view.ShowError("Invalid option. Please select 1-5.");
-                        break;
-                }
-            }
-            catch (Exception ex)
+    /// <summary>
+    /// Processes a single menu choice iteration (test seam).
+    /// </summary>
+    public void ProcessOnce()
+    {
+        try
+        {
+            var choice = _view.ShowMainMenu();
+            switch (choice)
             {
-                _view.ShowError($"An unexpected error occurred: {ex.Message}");
+                case '1':
+                    HandleGeneratePassword();
+                    break;
+                case '2':
+                    HandleSavePassword();
+                    break;
+                case '3':
+                    HandleViewPasswords();
+                    break;
+                case '4':
+                    HandleDeletePassword();
+                    break;
+                case '5':
+                    _view.ShowGoodbye();
+                    Environment.Exit(0);
+                    break;
+                default:
+                    _view.ShowError("Invalid option. Please select 1-5.");
+                    break;
             }
+        }
+        catch (Exception ex)
+        {
+            _view.ShowError($"An unexpected error occurred: {ex.Message}");
         }
     }
 

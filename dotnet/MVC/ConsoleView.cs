@@ -6,7 +6,7 @@ namespace PasswordGenerator.MVC;
 /// Passive View for MVC pattern.
 /// Contains NO business logic - only handles display and basic input.
 /// </summary>
-public sealed class ConsoleView
+public sealed class ConsoleView : IConsoleView
 {
     /// <summary>
     /// Displays the main menu and returns the user's choice.

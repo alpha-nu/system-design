@@ -3,6 +3,7 @@
 **/obj
 **/Debug
 **/Releaseß
+coverage
 
 # .NET user-specific files
 *.user
