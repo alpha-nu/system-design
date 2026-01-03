@@ -1,7 +1,7 @@
 """Domain models for the password generator application."""
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum, auto
 
 
@@ -50,4 +50,4 @@ class PasswordEntry:
         
         # Set default created_at if not provided
         if self.created_at is None:
-            object.__setattr__(self, 'created_at', datetime.utcnow())
+            object.__setattr__(self, 'created_at', datetime.now(timezone.utc))

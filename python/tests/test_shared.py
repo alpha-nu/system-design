@@ -1,7 +1,7 @@
 """Unit tests for shared domain models and utilities."""
 
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from shared import (
     PasswordConfig,
@@ -12,7 +12,7 @@ from shared import (
     RandomSourceFactory,
     JsonPasswordStorage,
 )
-from .test_helpers import (
+from tests.test_helpers import (
     MockRandomSource,
     InMemoryPasswordStorage,
     TempFileStorage,
@@ -70,9 +70,9 @@ class TestPasswordEntry:
 
     def test_default_created_at(self):
         """Test that created_at is set to current time."""
-        before = datetime.utcnow()
+        before = datetime.now(timezone.utc)
         entry = PasswordEntry(key="key", password="pass")
-        after = datetime.utcnow()
+        after = datetime.now(timezone.utc)
 
         assert before <= entry.created_at <= after
 

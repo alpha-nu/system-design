@@ -78,14 +78,13 @@ class PasswordGenerator:
 
         if len(password) < 8:
             return PasswordStrength.WEAK
-
-        if strength <= 2:
+        if strength <= 1:
             return PasswordStrength.WEAK
 
-        if strength == 3:
-            return PasswordStrength.MEDIUM
+        if strength == 4:
+            return PasswordStrength.STRONG
 
-        return PasswordStrength.STRONG
+        return PasswordStrength.MEDIUM
 
     @staticmethod
     def _build_character_pool(use_special_chars: bool) -> str:
