@@ -21,17 +21,25 @@ Concrete patterns and conventions observed
 - Random sources: use `RandomSourceFactory.create(RandomSourceType.X)` to obtain a platform-appropriate `IRandomSource`.
 - Storage: `JsonPasswordStorage` writes to `~/.password-generator/passwords.json` by default; tests use `TempFileStorage`/`InMemoryPasswordStorage` to avoid global side effects.
 
-Developer workflows (how to run & test)
+- Developer workflows (how to run & test)
 - Run an example UI (console):
-```bash
-python3 ./mvc/__main__.py
-python3 ./mvp/__main__.py
-python3 ./mvvm/__main__.py
-```
+	```bash
+	python3 ./mvc/__main__.py
+	python3 ./mvp/__main__.py
+	python3 ./mvvm/__main__.py
+	```
 - Run unit tests from the repo root through the workspace venv:
-```bash
-.venv/bin/python -m pytest -q
-```
+	```bash
+	.venv/bin/python -m pytest -q
+	```
+- Run the MVC e2e suite via the subprocess flow:
+	```bash
+	.venv/bin/python -m pytest tests/e2e
+	```
+- Run combined unit + e2e coverage (html report in `htmlcov/`):
+	```bash
+	.venv/bin/python -m pytest
+	```
 
 Integration points & gotchas
 - Platform-specific behavior: `DevUrandomSource` reads `/dev/urandom` and is only available on Unix-like systems (Linux/macOS). Use `RandomSourceFactory.get_available_sources()` to detect available options.

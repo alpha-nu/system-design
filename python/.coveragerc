@@ -1,0 +1,14 @@
+[run]
+branch = True
+source =
+    mvc
+    shared
+
+[report]
+omit =
+    tests/*
+    .venv/*
+    **/tests/*
+
+[html]
+directory = htmlcov
